@@ -1,0 +1,27 @@
+{
+    "extends": [ "google" , "plugin:react/recommended"],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": true
+        }
+    },
+    "env": {
+        "es6": true
+    },
+    "rules": {
+        "max-len": ["error", {
+            "code": 120,
+            "ignoreComments": true
+            }],
+        "object-curly-spacing": ["error", "always"],
+        "curly": ["error", "multi-or-nest"],
+        "indent": ["error", 2, {
+            "MemberExpression": 1
+        }],
+        "brace-style": ["error", "1tbs", { "allowSingleLine": true}],
+        "block-spacing": ["error", "always"],
+        "require-jsdoc": "off"
+    }
+}
