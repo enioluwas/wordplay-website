@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
-import { Button, Card } from 'react-bootstrap';
-import logo from '../../img/app-logo.svg';
+import { Button, Card, Col, Form } from 'react-bootstrap';
 
 export default class WordsLettersForm extends Component {
   render() {
     return (
-      <Card border="dark" style={{ width: '18rem' }} className="text-center">
-        <Card.Header >
-          <Card.Img variant="top" src={logo} />
+      <Card style={{ width: '24rem' }} border="dark" className="text-center">
+        <Card.Header>
+          Words With Letters
         </Card.Header>
         <Card.Body>
-          <Card.Text>
-            Words With Letter
-          </Card.Text>
-          <Button variant="dark" href="/login" size="lg">
-            <img src={logo}
-              width="30"
-              height ="30"
-              className="d-inline-block align-top mr-3"
-              alt="logo" />
-          Login
-          </Button>
+          <Card.Text>Enter a bunch of letters to find the words you can make from them.</Card.Text>
+          <Form border="dark">
+            <Form.Row>
+              <Col md="9">
+                <Form.Control type="text" placeholder="Word" />
+              </Col>
+              <Col md="3">
+                <Button type="submit" variant="dark">Search</Button>
+              </Col>
+            </Form.Row>
+          </Form>
         </Card.Body>
       </Card>
     );

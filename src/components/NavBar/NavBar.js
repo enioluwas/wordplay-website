@@ -26,7 +26,7 @@ class NavBar extends Component {
             height ="30"
             className="d-inline-block align-top mr-2"
             alt="logo" />
-        Playlist to Spotify
+        Wordplay
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
