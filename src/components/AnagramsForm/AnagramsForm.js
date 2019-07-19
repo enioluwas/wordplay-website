@@ -1,23 +1,31 @@
 import React, { Component } from 'react';
-import { Card, Button, Form, Col } from 'react-bootstrap';
+import { Button, Card, Col, Form } from 'react-bootstrap';
 
 export default class AnagramsForm extends Component {
+  submit(event) {
+    const form = event.currentTarget;
+    form.checkValidity();
+    event.preventDefault();
+  }
+
+  getResults() {
+
+  }
+
   render() {
     return (
-      <Card style={{ width: '24rem' }} border="dark" className="text-center">
-        <Card.Header>
-          Anagrams
-        </Card.Header>
+      <Card border="dark" className="formCard text-center">
+        <Card.Header>Anagrams</Card.Header>
         <Card.Body>
           <Card.Text>Enter a word to find its anagrams.</Card.Text>
-          <Form border="dark">
-            <Form.Row>
-              <Col md="9">
-                <Form.Control type="text" placeholder="Word" />
-              </Col>
-              <Col md="3">
+          <Form border="dark" onSubmit={this.submit.bind(this)}>
+            <Form.Row style={{ margin: 'auto' }}>
+              <Form.Group as={Col} md="9" controlId="anagramsWord">
+                <Form.Control controlId type="text" placeholder="Word" />
+              </Form.Group>
+              <Form.Group as={Col} md="3">
                 <Button type="submit" variant="dark">Search</Button>
-              </Col>
+              </Form.Group>
             </Form.Row>
           </Form>
         </Card.Body>

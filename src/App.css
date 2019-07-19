@@ -13,12 +13,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   /* color: white; */
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.formCard {
+  max-width: 450px;
+  margin-top: 4rem;
 }
 
 @keyframes App-logo-spin {

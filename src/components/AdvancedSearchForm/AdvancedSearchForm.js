@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, Form, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, Card, Form, InputGroup } from 'react-bootstrap';
 
 export default class AdvancedSearchForm extends Component {
   render() {
@@ -12,8 +12,8 @@ export default class AdvancedSearchForm extends Component {
     // );
 
     return (
-      <Card style={{ width: '30rem' }} border="dark">
-        <Card.Header>
+      <Card border="dark" className="formCard">
+        <Card.Header className="text-center">
         Advanced Search
         </Card.Header>
         <Card.Body>
@@ -33,23 +33,26 @@ export default class AdvancedSearchForm extends Component {
             </Form.Group>
             <Form.Group>
               <Form.Label>Contains</Form.Label>
-              <Form.Row>
-                <InputGroup style={{ width: '50%' } }>
+              <Form.Row style={{ margin: 'auto' }}>
+                <InputGroup>
                   <InputGroup.Prepend>
-                    <InputGroup.Text>
+                    <InputGroup.Text style={{ maxWidth: '7rem' }}>
                       <small>Letter</small>
                     </InputGroup.Text>
                   </InputGroup.Prepend>
-                  <Form.Control type="text" placeholder="A-Z" maxLength="1"></Form.Control>
-                  <InputGroup.Append>
-                    <InputGroup.Text><small>At Index</small></InputGroup.Text>
-                  </InputGroup.Append>
+                  <Form.Control type="text" placeholder="A-Z" maxLength="1" className="lbShort"/>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text style={{ maxWidth: '7rem' }} className="border-left">
+                      <small>At Index</small>
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control type="text" placeholder="1-15" maxLength="2" className="lbShort"/>
                 </InputGroup>
               </Form.Row>
             </Form.Group>
             <Form.Group>
               <Form.Label>Size</Form.Label>
-              <Form.Control type="text" placeholder="1-15"></Form.Control>
+              <Form.Control type="text" placeholder="1-15" maxLength="2"></Form.Control>
             </Form.Group>
             <Form.Group className="text-center">
               <Button type="submit" variant="dark">Search</Button>

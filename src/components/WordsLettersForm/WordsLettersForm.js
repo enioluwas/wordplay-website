@@ -4,7 +4,7 @@ import { Button, Card, Col, Form } from 'react-bootstrap';
 export default class WordsLettersForm extends Component {
   render() {
     return (
-      <Card style={{ width: '24rem' }} border="dark" className="text-center">
+      <Card border="dark" className="formCard text-center">
         <Card.Header>
           Words With Letters
         </Card.Header>

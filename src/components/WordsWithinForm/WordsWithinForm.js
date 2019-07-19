@@ -4,7 +4,7 @@ import { Button, Card, Col, Form } from 'react-bootstrap';
 export default class WordsWithinForm extends Component {
   render() {
     return (
-      <Card style={{ width: '24rem' }} border="dark" className="text-center">
+      <Card style={{ width: '24rem', marginTop: '4rem' }} border="dark" className="text-center">
         <Card.Header>
           Words Within Word
         </Card.Header>
