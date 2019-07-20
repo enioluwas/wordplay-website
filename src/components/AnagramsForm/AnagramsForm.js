@@ -19,8 +19,9 @@ class AnagramsForm extends Component {
   }
 
   handleWordChange(event) {
-    if (event.target.value.length === 0 || isAlpha(event.target.value)) {
-      this.setState({ word: event.target.value });
+    const { name, value, maxLength } = event.target;
+    if (value.length === 0 || isAlpha(value)) {
+      this.setState({ [name]: value.substring(0, maxLength) });
     }
   }
 
@@ -44,20 +45,18 @@ class AnagramsForm extends Component {
     this.setState({ disableSubmit: false });
   }
 
-  getResults() {
-
-  }
-
   render() {
     return (
-      <Card border="dark" className="formCard text-center">
+      <Card className="formCard border-0">
         <Card.Header>Anagrams</Card.Header>
         <Card.Body>
           <Card.Text>Enter a word to find its anagrams.</Card.Text>
           <Form border="dark" onSubmit={this.handleSubmit}>
             <Form.Row style={{ margin: 'auto' }}>
-              <Form.Group as={Col} xs="9" controlId="anagramsWord">
+              <Form.Group as={Col} xs="7" controlId="anagramsWord">
                 <Form.Control
+                  name="word"
+                  maxLength="15"
                   type="text"
                   placeholder="Word"
                   value={this.state.word}

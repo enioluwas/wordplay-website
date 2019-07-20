@@ -5,6 +5,7 @@ import AdvancedSearchForm from './components/AdvancedSearchForm/AdvancedSearchFo
 import AnagramsForm from './components/AnagramsForm/AnagramsForm';
 import WordsWithinForm from './components/WordsWithinForm/WordsWithinForm';
 import WordsLettersForm from './components/WordsLettersForm/WordsLettersForm';
+import ResultsView from './components/ResultsView/ResultsView';
 
 class App extends Component {
   constructor(props) {
@@ -12,10 +13,12 @@ class App extends Component {
 
     this.state = {
       currentPage: 'Advanced Search',
+      results: [],
     };
 
     this.setCurrentPage = this.setCurrentPage.bind(this);
     this.getComponentfromPage = this.getComponentfromPage.bind(this);
+    this.setResults = this.setResults.bind(this);
     this.displayResults = this.displayResults.bind(this);
   }
 
@@ -25,16 +28,22 @@ class App extends Component {
 
   getComponentfromPage(page) {
     switch (page) {
-    case 'Advanced Search': return (<AdvancedSearchForm onResult={this.displayResults}/>);
-    case 'Anagrams': return (<AnagramsForm onResult={this.displayResults}/>);
-    case 'Words Within Word': return (<WordsWithinForm onResult={this.displayResults}/>);
-    case 'Words With Letters': return (<WordsLettersForm onResult={this.displayResults}/>);
+    case 'Advanced Search': return (<AdvancedSearchForm onResult={this.setResults}/>);
+    case 'Anagrams': return (<AnagramsForm onResult={this.setResults}/>);
+    case 'Words Within Word': return (<WordsWithinForm onResult={this.setResults}/>);
+    case 'Words With Letters': return (<WordsLettersForm onResult={this.setResults}/>);
     default: return null;
     }
   }
 
-  displayResults(data) {
+  setResults(data) {
+    this.setState({ results: data });
+  }
 
+  displayResults(data) {
+    return (
+      <ResultsView words={data}/>
+    );
   }
 
   render() {
@@ -43,6 +52,8 @@ class App extends Component {
         <NavBar navHandler={this.setCurrentPage.bind(this)}/>
         <div className="App-header">
           {this.getComponentfromPage(this.state.currentPage)}
+          <hr></hr>
+          {this.state.results.length > 0 && this.displayResults(this.state.results)}
         </div>
       </Fragment>
     );

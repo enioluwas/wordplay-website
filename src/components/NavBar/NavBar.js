@@ -21,7 +21,7 @@ class NavBar extends Component {
 
   render() {
     return (
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
         <Navbar.Brand>
           <img src={logo}
             width="30"
@@ -37,7 +37,11 @@ class NavBar extends Component {
             <Nav.Link eventKey="Anagrams" onSelect={this.select}>Anagrams</Nav.Link>
             <Nav.Link eventKey="Words Within Word" onSelect={this.select}>Words Within Word</Nav.Link>
             <Nav.Link eventKey="Words With Letters" onSelect={this.select}>Words With Letters</Nav.Link>
-            <Nav.Link href="https://www.github.com/enioluwa23/wordplay-website" target="_blank">About</Nav.Link>
+          </Nav>
+          <Nav activeKey={null}>
+            <Nav.Link className="mr-sm-2" href="https://www.github.com/enioluwa23/wordplay-website" target="_blank">
+              About
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

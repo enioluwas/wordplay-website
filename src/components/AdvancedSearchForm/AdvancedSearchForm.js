@@ -128,8 +128,8 @@ class AdvancedSearchForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.setState({ disableSubmit: true });
-    const word = this.state.word;
-    console.log(word);
+    const beginsWith = this.state.beginsWith;
+    console.log(beginsWith);
     this.setState({ disableSubmit: false });
   }
 
@@ -139,7 +139,7 @@ class AdvancedSearchForm extends Component {
 
   render() {
     return (
-      <Card border="dark" className="formCard">
+      <Card className="formCard border-0">
         <Card.Header className="text-center">
         Advanced Search
         </Card.Header>
@@ -304,7 +304,10 @@ class AdvancedSearchForm extends Component {
 
             </Form.Group>
             <Form.Group className="text-center">
-              <Button type="submit" variant="dark" disabled={this.state.disableSubmit}>Search</Button>
+              <Button type="submit"
+                variant="dark"
+                disabled={this.state.disableSubmit}
+                onClick={this.handleSubmit}>Search</Button>
             </Form.Group>
           </Form>
         </Card.Body>

@@ -8,7 +8,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,8 +22,11 @@
 }
 
 .formCard {
-  max-width: 450px;
-  margin-top: 2rem;
+  margin-top: 5rem;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 0 !important;
+  border: 1px solid #d8d8d8!important;
 }
 
 .formCard ::placeholder {
@@ -52,6 +55,11 @@
   padding-left: .2rem;
   padding-right: .2rem;
   text-align: center;
+}
+
+.resultItem {
+  border: 1px solid #292c45;
+  padding: .5rem !important;
 }
 
 @keyframes App-logo-spin {
