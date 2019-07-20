@@ -13,22 +13,28 @@ class AdvancedSearchForm extends Component {
       endsWith: '',
       contains: [''],
       containsCount: 1,
-      containsAtLetter: Array(15).fill(''),
-      containsAtIndex: Array(15).fill(''),
+      containsAtLetter: [''],
+      containsAtIndex: [''],
       containsAtCount: 1,
       size: '',
       disableSubmit: false,
     };
 
+    this.updateVariableField = this.updateVariableField.bind(this);
+
     this.handleAddContainsField = this.handleAddContainsField.bind(this);
     this.handleRemoveContainsField = this.handleRemoveContainsField.bind(this);
     this.handleContainsChange = this.handleContainsChange.bind(this);
+
+    this.handleAddContainsAtField = this.handleAddContainsAtField.bind(this);
+    this.handleRemoveContainsAtField = this.handleRemoveContainsAtField.bind(this);
     this.handleContainsAtLetterChange = this.handleContainsAtLetterChange.bind(this);
     this.handleContainsAtIndexChange = this.handleContainsAtIndexChange.bind(this);
-    this.updateVariableField = this.updateVariableField.bind(this);
+
     this.handleAlphaInputChange = this.handleAlphaInputChange.bind(this);
     this.numericInputIsValid = this.numericInputIsValid.bind(this);
     this.handleNumericInputChange = this.handleNumericInputChange.bind(this);
+
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -100,6 +106,22 @@ class AdvancedSearchForm extends Component {
     const contains = [...this.state.contains];
     contains.splice(index, 1);
     this.setState( { contains });
+    this.setState((prevState) => ({ containsCount: prevState.containsCount - 1 }));
+  }
+
+  handleAddContainsAtField() {
+    const updatedLetters = this.state.containsAtLetter.concat('');
+    const updatedIndexes = this.state.containsAtIndex.concat('');
+    this.setState({ containsAtLetter: updatedLetters, containsAtIndex: updatedIndexes });
+    this.setState((prevState) => ({ containsAtCount: prevState.containsAtCount + 1 }));
+  }
+
+  handleRemoveContainsAtField(index) {
+    const containsAtLetter = [...this.state.containsAtLetter];
+    containsAtLetter.splice(index, 1);
+    const containsAtIndex = [...this.state.containsAtIndex];
+    containsAtIndex.splice(index, 1);
+    this.setState({ containsAtLetter, containsAtIndex });
     this.setState((prevState) => ({ containsAtCount: prevState.containsAtCount - 1 }));
   }
 
@@ -189,14 +211,13 @@ class AdvancedSearchForm extends Component {
                       onChange={this.handleContainsChange}/>
                     <InputGroup.Append>
                       <Button
-                        variant="outline-warning"
+                        variant="outline-danger"
                         className="removeButton"
                         onClick={() => this.handleRemoveContainsField(idx)}>-</Button>
                     </InputGroup.Append>
                   </InputGroup>
                 );
-              })
-              }
+              })}
             </Form.Group>
             <Form.Group>
               <Form.Label>Contains</Form.Label>
@@ -229,10 +250,58 @@ class AdvancedSearchForm extends Component {
                     value={this.state.containsAtIndex[0]}
                     onChange={this.handleContainsAtIndexChange}/>
                   <InputGroup.Append>
-                    <Button variant="outline-success" className="addButton"><strong>+</strong></Button>
+                    <Button
+                      variant="outline-success"
+                      className="addButton"
+                      onClick={this.handleAddContainsAtField}>+</Button>
                   </InputGroup.Append>
                 </InputGroup>
               </Form.Row>
+              {this.state.containsAtCount > 1 &&
+                this.state.containsAtLetter.map((value, idx) => {
+                  if (idx === 0) {
+                    return null;
+                  }
+                  return (
+                    <Form.Row key={idx} style={{ margin: 'auto' }}>
+                      <InputGroup>
+                        <InputGroup.Prepend>
+                          <InputGroup.Text style={{ maxWidth: '7rem' }}>
+                            <small>Letter</small>
+                          </InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control
+                          name={`containsAtLetter${idx}`}
+                          type="text"
+                          placeholder="A-Z"
+                          maxLength="1"
+                          className="lbShort"
+                          value={this.state.containsAtLetter[idx]}
+                          onChange={this.handleContainsAtLetterChange}/>
+                        <InputGroup.Prepend>
+                          <InputGroup.Text style={{ maxWidth: '7rem' }} className="border-left">
+                            <small>At Index</small>
+                          </InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control
+                          name={`containsAtIndex${idx}`}
+                          type="text"
+                          placeholder="1-15"
+                          maxLength="2"
+                          className="lbShort"
+                          value={this.state.containsAtIndex[idx]}
+                          onChange={this.handleContainsAtIndexChange}/>
+                        <InputGroup.Append>
+                          <Button
+                            variant="outline-danger"
+                            className="removeButton"
+                            onClick={() => this.handleRemoveContainsAtField(idx)}>-</Button>
+                        </InputGroup.Append>
+                      </InputGroup>
+                    </Form.Row>
+                  );
+                })}
+
             </Form.Group>
             <Form.Group className="text-center">
               <Button type="submit" variant="dark" disabled={this.state.disableSubmit}>Search</Button>

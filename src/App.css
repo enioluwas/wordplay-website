@@ -35,13 +35,17 @@
 }
 
 .formCard .addButton {
-  font-size: 1em;
+  font-size: 1.5em;
   font-weight: bold;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .formCard .removeButton {
-  font-size: 1em;
+  font-size: 1.5em;
   font-weight: bold;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .lbShort {
