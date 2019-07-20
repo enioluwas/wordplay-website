@@ -26,6 +26,18 @@
   margin-top: 2rem;
 }
 
+.formCard ::placeholder {
+  font-size: .9rem;
+}
+
+.formCard .form-label {
+  font-size: 1rem;
+}
+
+.formCard .addButton {
+  font-size: 1em;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

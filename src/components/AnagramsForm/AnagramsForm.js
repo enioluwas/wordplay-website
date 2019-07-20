@@ -40,6 +40,7 @@ class AnagramsForm extends Component {
       return;
     }
     console.log(response.data);
+    this.props.onResult(response.data);
     this.setState({ disableSubmit: false });
   }
 
@@ -55,7 +56,7 @@ class AnagramsForm extends Component {
           <Card.Text>Enter a word to find its anagrams.</Card.Text>
           <Form border="dark" onSubmit={this.handleSubmit}>
             <Form.Row style={{ margin: 'auto' }}>
-              <Form.Group as={Col} md="9" controlId="anagramsWord">
+              <Form.Group as={Col} xs="9" controlId="anagramsWord">
                 <Form.Control
                   type="text"
                   placeholder="Word"
@@ -63,7 +64,7 @@ class AnagramsForm extends Component {
                   onChange={this.handleWordChange}
                   required/>
               </Form.Group>
-              <Form.Group as={Col} md="3">
+              <Form.Group as={Col} xs="3">
                 <Button type="submit" variant="dark" disabled={this.state.disableSubmit}>Search</Button>
               </Form.Group>
             </Form.Row>

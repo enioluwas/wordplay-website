@@ -36,14 +36,14 @@ class WordsLettersForm extends Component {
           <Card.Text>Enter letters to find the words you can make with them.</Card.Text>
           <Form border="dark" onSubmit={this.handleSubmit}>
             <Form.Row style={{ margin: 'auto' }}>
-              <Form.Group as={Col} md="9" controlId="wwletterWord">
+              <Form.Group as={Col} xs="9" controlId="wwletterWord">
                 <Form.Control
                   type="text"
                   placeholder="Word"
                   value={this.state.word}
                   onChange={this.handleWordChange}/>
               </Form.Group>
-              <Form.Group as={Col} md="3">
+              <Form.Group as={Col} xs="3">
                 <Button type="submit" variant="dark">Search</Button>
               </Form.Group>
             </Form.Row>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
+import { Button, Card, Col, Form, InputGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { isAlpha, isNumeric } from '../../utils';
 // import axios from 'axios';
@@ -53,8 +53,10 @@ class AdvancedSearchForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    this.setState({ disableSubmit: true });
     const word = this.state.word;
     console.log(word);
+    this.setState({ disableSubmit: false });
   }
 
   getResults() {
@@ -70,35 +72,52 @@ class AdvancedSearchForm extends Component {
         <Card.Body>
           <Card.Text>Fill in the criteria below to find words.</Card.Text>
           <Form border="dark">
-            <Form.Group>
-              <Form.Label>Begins With</Form.Label>
-              <Form.Control
-                name="beginsWith"
-                type="text"
-                placeholder="e.g anglo"
-                maxLength="15"
-                value={this.state.beginsWith}
-                onChange={this.handleAlphaInputChange}/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Ends With</Form.Label>
-              <Form.Control
-                name="endsWith"
-                type="text"
-                placeholder="e.g tion"
-                maxLength="15"
-                value={this.state.endsWith}
-                onChange={this.handleAlphaInputChange}/>
-            </Form.Group>
+            <Form.Row>
+              <Form.Group as={Col}>
+                <Form.Label>Begins With</Form.Label>
+                <Form.Control
+                  name="beginsWith"
+                  type="text"
+                  placeholder="e.g pre"
+                  maxLength="15"
+                  value={this.state.beginsWith}
+                  onChange={this.handleAlphaInputChange}/>
+              </Form.Group>
+              <Form.Group as={Col}>
+                <Form.Label>Ends With</Form.Label>
+                <Form.Control
+                  name="endsWith"
+                  type="text"
+                  placeholder="e.g son"
+                  maxLength="15"
+                  value={this.state.endsWith}
+                  onChange={this.handleAlphaInputChange}/>
+              </Form.Group>
+              <Form.Group as={Col} xs={3}>
+                <Form.Label>Size</Form.Label>
+                <Form.Control
+                  name="size"
+                  type="text"
+                  placeholder="1-15"
+                  maxLength="2"
+                  value={this.state.size}
+                  onChange={this.handleNumericInputChange}/>
+              </Form.Group>
+            </Form.Row>
             <Form.Group>
               <Form.Label>Contains</Form.Label>
-              <Form.Control
-                name="contains"
-                type="text"
-                placeholder="e.g ere"
-                maxLength="15"
-                value={this.state.contains}
-                onChange={this.handleAlphaInputChange}/>
+              <InputGroup>
+                <Form.Control
+                  name="contains"
+                  type="text"
+                  placeholder="e.g ere"
+                  maxLength="15"
+                  value={this.state.contains}
+                  onChange={this.handleAlphaInputChange}/>
+                <InputGroup.Append>
+                  <Button variant="outline-success" className="addButton"><strong>+</strong></Button>
+                </InputGroup.Append>
+              </InputGroup>
             </Form.Group>
             <Form.Group>
               <Form.Label>Contains</Form.Label>
@@ -130,18 +149,11 @@ class AdvancedSearchForm extends Component {
                     className="lbShort"
                     value={this.state.containsAtIndex}
                     onChange={this.handleNumericInputChange}/>
+                  <InputGroup.Append>
+                    <Button variant="outline-success" className="addButton"><strong>+</strong></Button>
+                  </InputGroup.Append>
                 </InputGroup>
               </Form.Row>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Size</Form.Label>
-              <Form.Control
-                name="size"
-                type="text"
-                placeholder="1-15"
-                maxLength="2"
-                value={this.state.size}
-                onChange={this.handleNumericInputChange}/>
             </Form.Group>
             <Form.Group className="text-center">
               <Button type="submit" variant="dark" disabled={this.state.disableSubmit}>Search</Button>
