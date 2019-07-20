@@ -6,7 +6,7 @@ const ExtraContainsField = (props, removeHandler) => {
     <InputGroup>
       <Form.Control {...props}/>
       <InputGroup.Append>
-        <Button variant="outline-danger" className="removeButton" onClick={removeHandler}>
+        <Button variant="outline-warning" className="removeButton" onClick={removeHandler}>
           <strong>-</strong>
         </Button>
       </InputGroup.Append>
@@ -31,11 +31,12 @@ const ExtraContainsAtField = (letterProps, indexProps, removeHandler) => {
         </InputGroup.Prepend>
         <Form.Control {...indexProps}/>
         <InputGroup.Append>
-          <Button variant="outline-success" className="addButton"><strong>+</strong></Button>
+          <Button variant="outline-warning" className="removeButton" onClick={removeHandler}><strong>-</strong></Button>
         </InputGroup.Append>
       </InputGroup>
     </Form.Row>
   );
 };
 
-export default { ExtraContainsField };
+export { ExtraContainsField, ExtraContainsAtField };
+export default { ExtraContainsField, ExtraContainsAtField };

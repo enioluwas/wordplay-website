@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Card, Col, Form, InputGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { isAlpha, isNumeric } from '../../utils';
+import { ExtraContainsField, ExtraContainsAtField } from './ExtraContainsFields';
 // import axios from 'axios';
 
 class AdvancedSearchForm extends Component {
@@ -12,8 +13,10 @@ class AdvancedSearchForm extends Component {
       beginsWith: '',
       endsWith: '',
       contains: Array(15).fill(''),
+      containsCount: 1,
       containsAtLetter: Array(15).fill(''),
       containsAtIndex: Array(15).fill(''),
+      containsAtCount: 1,
       size: '',
       disableSubmit: false,
     };
@@ -23,6 +26,7 @@ class AdvancedSearchForm extends Component {
     this.handleContainsAtIndexChange = this.handleContainsAtIndexChange.bind(this);
     this.updateVariableField = this.updateVariableField.bind(this);
     this.handleAlphaInputChange = this.handleAlphaInputChange.bind(this);
+    this.numericInputIsValid = this.numericInputIsValid.bind(this);
     this.handleNumericInputChange = this.handleNumericInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -50,22 +54,8 @@ class AdvancedSearchForm extends Component {
 
   handleContainsAtIndexChange(event) {
     const { name, value, maxLength } = event.target;
-    let mutableValue = ` ${value}`.slice(1);
-    if (mutableValue.length === 0) {
-      this.updateVariableField(name, mutableValue, maxLength, 'x', 'containsAtIndex');
-      return;
-    } else if (isNumeric(mutableValue)) {
-      if (mutableValue.charAt(0) === '0') {
-        mutableValue = '';
-      } else if (mutableValue.charAt(0) === '1') {
-        if (parseInt(mutableValue) > 15) {
-          mutableValue = mutableValue.substr(0, mutableValue.length - 1);
-        }
-      } else {
-        mutableValue = mutableValue.charAt(0);
-      }
-
-      this.updateVariableField(name, mutableValue, maxLength, 'x', 'containsAtIndex');
+    if (this.numericInputIsValid(value)) {
+      this.updateVariableField(name, value, maxLength, 'x', 'containsAtIndex');
     }
   }
 
@@ -76,25 +66,34 @@ class AdvancedSearchForm extends Component {
     }
   }
 
+  numericInputIsValid(value) {
+    if (value.length === 0) {
+      return true;
+    }
+    if (!isNumeric(value)) {
+      return false;
+    }
+    if (value === '0') {
+      return false;
+    }
+    if (parseInt(value) > 15) {
+      return false;
+    }
+    return true;
+  }
+
   handleNumericInputChange(event) {
     const { name, value, maxLength } = event.target;
-    let mutableValue = ` ${value}`.slice(1);
-    if (mutableValue.length === 0) {
-      this.setState({ [name]: mutableValue });
-      return;
-    } else if (isNumeric(mutableValue)) {
-      if (mutableValue.charAt(0) === '0') {
-        mutableValue = '';
-      } else if (mutableValue.charAt(0) === '1') {
-        if (parseInt(mutableValue) > 15) {
-          mutableValue = mutableValue.substr(0, mutableValue.length - 1);
-        }
-      } else {
-        mutableValue = mutableValue.charAt(0);
-      }
-
-      this.setState({ [name]: mutableValue.substring(0, maxLength) });
+    if (this.numericInputIsValid(value)) {
+      this.setState({ [name]: value.substring(0, maxLength) });
     }
+  }
+
+  addContainsField(event, props) {
+    const { name, value, ...propsToPass } = props;
+    propsToPass.name = name + this.state.containsCount;
+    propsToPass.value = this.state;
+    this.setState((prevState) => ({ containsAtCount: prevState.containsAtCount + 1 }));
   }
 
   handleSubmit(event) {
