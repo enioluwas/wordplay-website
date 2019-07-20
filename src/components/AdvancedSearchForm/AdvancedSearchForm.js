@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Button, Card, Col, Form, InputGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { isAlpha, isNumeric } from '../../utils';
-import { ExtraContainsField, ExtraContainsAtField } from './ExtraContainsFields';
 // import axios from 'axios';
 
 class AdvancedSearchForm extends Component {
@@ -12,7 +11,7 @@ class AdvancedSearchForm extends Component {
     this.state = {
       beginsWith: '',
       endsWith: '',
-      contains: Array(15).fill(''),
+      contains: [''],
       containsCount: 1,
       containsAtLetter: Array(15).fill(''),
       containsAtIndex: Array(15).fill(''),
@@ -21,6 +20,8 @@ class AdvancedSearchForm extends Component {
       disableSubmit: false,
     };
 
+    this.handleAddContainsField = this.handleAddContainsField.bind(this);
+    this.handleRemoveContainsField = this.handleRemoveContainsField.bind(this);
     this.handleContainsChange = this.handleContainsChange.bind(this);
     this.handleContainsAtLetterChange = this.handleContainsAtLetterChange.bind(this);
     this.handleContainsAtIndexChange = this.handleContainsAtIndexChange.bind(this);
@@ -89,11 +90,17 @@ class AdvancedSearchForm extends Component {
     }
   }
 
-  addContainsField(event, props) {
-    const { name, value, ...propsToPass } = props;
-    propsToPass.name = name + this.state.containsCount;
-    propsToPass.value = this.state;
-    this.setState((prevState) => ({ containsAtCount: prevState.containsAtCount + 1 }));
+  handleAddContainsField() {
+    const updated = this.state.contains.concat('');
+    this.setState({ contains: updated });
+    this.setState((prevState) => ({ containsCount: prevState.containsCount + 1 }));
+  }
+
+  handleRemoveContainsField(index) {
+    const contains = [...this.state.contains];
+    contains.splice(index, 1);
+    this.setState( { contains });
+    this.setState((prevState) => ({ containsAtCount: prevState.containsAtCount - 1 }));
   }
 
   handleSubmit(event) {
@@ -160,9 +167,36 @@ class AdvancedSearchForm extends Component {
                   value={this.state.contains[0]}
                   onChange={this.handleContainsChange}/>
                 <InputGroup.Append>
-                  <Button variant="outline-success" className="addButton"><strong>+</strong></Button>
+                  <Button
+                    variant="outline-success"
+                    className="addButton"
+                    onClick={this.handleAddContainsField}>+</Button>
                 </InputGroup.Append>
               </InputGroup>
+              {this.state.containsCount > 1 &&
+              this.state.contains.map((value, idx) => {
+                if (idx === 0) {
+                  return null;
+                }
+                return (
+                  <InputGroup key={idx}>
+                    <Form.Control
+                      name={`contains${idx}`}
+                      type="text"
+                      placeholder="e.g ere"
+                      maxLength="15"
+                      value={this.state.contains[idx]}
+                      onChange={this.handleContainsChange}/>
+                    <InputGroup.Append>
+                      <Button
+                        variant="outline-warning"
+                        className="removeButton"
+                        onClick={() => this.handleRemoveContainsField(idx)}>-</Button>
+                    </InputGroup.Append>
+                  </InputGroup>
+                );
+              })
+              }
             </Form.Group>
             <Form.Group>
               <Form.Label>Contains</Form.Label>
