@@ -16,11 +16,11 @@
             "ignoreComments": true
             }],
         "object-curly-spacing": ["error", "always"],
-        "curly": ["error", "multi-or-nest"],
+        "curly": ["error", "all"],
         "indent": ["error", 2, {
             "MemberExpression": 1
         }],
-        "brace-style": ["error", "1tbs", { "allowSingleLine": true}],
+        "brace-style": ["error", "1tbs", { "allowSingleLine": false}],
         "block-spacing": ["error", "always"],
         "require-jsdoc": "off"
     }

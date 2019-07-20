@@ -13,6 +13,10 @@ class App extends Component {
     this.state = {
       currentPage: 'Advanced Search',
     };
+
+    this.setCurrentPage = this.setCurrentPage.bind(this);
+    this.getComponentfromPage = this.getComponentfromPage.bind(this);
+    this.displayResults = this.displayResults.bind(this);
   }
 
   setCurrentPage(page) {
@@ -21,12 +25,16 @@ class App extends Component {
 
   getComponentfromPage(page) {
     switch (page) {
-    case 'Advanced Search': return (<AdvancedSearchForm/>);
-    case 'Anagrams': return (<AnagramsForm/>);
-    case 'Words Within Word': return (<WordsWithinForm/>);
-    case 'Words With Letters': return (<WordsLettersForm/>);
+    case 'Advanced Search': return (<AdvancedSearchForm onResult={this.displayResults}/>);
+    case 'Anagrams': return (<AnagramsForm onResult={this.displayResults}/>);
+    case 'Words Within Word': return (<WordsWithinForm onResult={this.displayResults}/>);
+    case 'Words With Letters': return (<WordsLettersForm onResult={this.displayResults}/>);
     default: return null;
     }
+  }
+
+  displayResults(data) {
+
   }
 
   render() {

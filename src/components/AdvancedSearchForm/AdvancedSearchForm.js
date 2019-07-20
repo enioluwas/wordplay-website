@@ -1,16 +1,67 @@
 import React, { Component } from 'react';
 import { Button, Card, Form, InputGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { isAlpha, isNumeric } from '../../utils';
+// import axios from 'axios';
 
-export default class AdvancedSearchForm extends Component {
+class AdvancedSearchForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      beginsWith: '',
+      endsWith: '',
+      contains: '',
+      containsAtLetter: '',
+      containsAtIndex: '',
+      size: '',
+      disableSubmit: false,
+    };
+
+    this.handleAlphaInputChange = this.handleAlphaInputChange.bind(this);
+    this.handleNumericInputChange = this.handleNumericInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleAlphaInputChange(event) {
+    const { name, value, maxLength } = event.target;
+    if (value.length === 0 || isAlpha(value)) {
+      this.setState({ [name]: value.substring(0, maxLength) });
+    }
+  }
+
+  handleNumericInputChange(event) {
+    const { name, value, maxLength } = event.target;
+    let mutableValue = ` ${value}`.slice(1);
+    if (mutableValue.length === 0) {
+      this.setState({ [name]: mutableValue });
+      return;
+    } else if (isNumeric(mutableValue)) {
+      if (mutableValue.charAt(0) === '0') {
+        mutableValue = '';
+      } else if (mutableValue.charAt(0) === '1') {
+        if (parseInt(mutableValue) > 15) {
+          mutableValue = mutableValue.substr(0, mutableValue.length - 1);
+        }
+      } else {
+        mutableValue = mutableValue.charAt(0);
+      }
+
+      this.setState({ [name]: mutableValue.substring(0, maxLength) });
+    }
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const word = this.state.word;
+    console.log(word);
+  }
+
+  getResults() {
+
+  }
+
   render() {
-    // const optionsList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-    // const OptionsList = ({ list }) => (
-    //   <FormControl as="select">
-    //     <option>{`${list[0]}-${list[list.length - 1]}`}</option>
-    //     {list.map((item) => (<option key={item}>{item}</option>))}
-    //   </FormControl>
-    // );
-
     return (
       <Card border="dark" className="formCard">
         <Card.Header className="text-center">
@@ -21,15 +72,33 @@ export default class AdvancedSearchForm extends Component {
           <Form border="dark">
             <Form.Group>
               <Form.Label>Begins With</Form.Label>
-              <Form.Control type="text" placeholder="e.g anglo"></Form.Control>
+              <Form.Control
+                name="beginsWith"
+                type="text"
+                placeholder="e.g anglo"
+                maxLength="15"
+                value={this.state.beginsWith}
+                onChange={this.handleAlphaInputChange}/>
             </Form.Group>
             <Form.Group>
               <Form.Label>Ends With</Form.Label>
-              <Form.Control type="text" placeholder="e.g tion"></Form.Control>
+              <Form.Control
+                name="endsWith"
+                type="text"
+                placeholder="e.g tion"
+                maxLength="15"
+                value={this.state.endsWith}
+                onChange={this.handleAlphaInputChange}/>
             </Form.Group>
             <Form.Group>
               <Form.Label>Contains</Form.Label>
-              <Form.Control type="text" placeholder="e.g ere"></Form.Control>
+              <Form.Control
+                name="contains"
+                type="text"
+                placeholder="e.g ere"
+                maxLength="15"
+                value={this.state.contains}
+                onChange={this.handleAlphaInputChange}/>
             </Form.Group>
             <Form.Group>
               <Form.Label>Contains</Form.Label>
@@ -40,22 +109,42 @@ export default class AdvancedSearchForm extends Component {
                       <small>Letter</small>
                     </InputGroup.Text>
                   </InputGroup.Prepend>
-                  <Form.Control type="text" placeholder="A-Z" maxLength="1" className="lbShort"/>
+                  <Form.Control
+                    name="containsAtLetter"
+                    type="text"
+                    placeholder="A-Z"
+                    maxLength="1"
+                    className="lbShort"
+                    value={this.state.containsAtLetter}
+                    onChange={this.handleAlphaInputChange}/>
                   <InputGroup.Prepend>
                     <InputGroup.Text style={{ maxWidth: '7rem' }} className="border-left">
                       <small>At Index</small>
                     </InputGroup.Text>
                   </InputGroup.Prepend>
-                  <Form.Control type="text" placeholder="1-15" maxLength="2" className="lbShort"/>
+                  <Form.Control
+                    name="containsAtIndex"
+                    type="text"
+                    placeholder="1-15"
+                    maxLength="2"
+                    className="lbShort"
+                    value={this.state.containsAtIndex}
+                    onChange={this.handleNumericInputChange}/>
                 </InputGroup>
               </Form.Row>
             </Form.Group>
             <Form.Group>
               <Form.Label>Size</Form.Label>
-              <Form.Control type="text" placeholder="1-15" maxLength="2"></Form.Control>
+              <Form.Control
+                name="size"
+                type="text"
+                placeholder="1-15"
+                maxLength="2"
+                value={this.state.size}
+                onChange={this.handleNumericInputChange}/>
             </Form.Group>
             <Form.Group className="text-center">
-              <Button type="submit" variant="dark">Search</Button>
+              <Button type="submit" variant="dark" disabled={this.state.disableSubmit}>Search</Button>
             </Form.Group>
           </Form>
         </Card.Body>
@@ -63,3 +152,10 @@ export default class AdvancedSearchForm extends Component {
     );
   }
 }
+
+AdvancedSearchForm.propTypes = {
+  onResult: PropTypes.func.isRequired,
+};
+
+export default AdvancedSearchForm;
+

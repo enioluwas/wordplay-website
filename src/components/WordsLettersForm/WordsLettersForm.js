@@ -1,23 +1,51 @@
 import React, { Component } from 'react';
 import { Button, Card, Col, Form } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { isAlpha } from '../../utils';
 
-export default class WordsLettersForm extends Component {
+class WordsLettersForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { word: '' };
+
+    this.handleWordChange = this.handleWordChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleWordChange(event) {
+    if (event.target.value.length === 0 || isAlpha(event.target.value)) {
+      this.setState({ word: event.target.value });
+    }
+  }
+
+  handleSubmit(event) {
+    const word = this.state.word;
+    console.log(word);
+  }
+
+  getResults() {
+
+  }
+
   render() {
     return (
       <Card border="dark" className="formCard text-center">
-        <Card.Header>
-          Words With Letters
-        </Card.Header>
+        <Card.Header>Words With Letters</Card.Header>
         <Card.Body>
-          <Card.Text>Enter a bunch of letters to find the words you can make from them.</Card.Text>
-          <Form border="dark">
-            <Form.Row>
-              <Col md="9">
-                <Form.Control type="text" placeholder="Word" />
-              </Col>
-              <Col md="3">
+          <Card.Text>Enter letters to find the words you can make with them.</Card.Text>
+          <Form border="dark" onSubmit={this.handleSubmit}>
+            <Form.Row style={{ margin: 'auto' }}>
+              <Form.Group as={Col} md="9" controlId="wwletterWord">
+                <Form.Control
+                  type="text"
+                  placeholder="Word"
+                  value={this.state.word}
+                  onChange={this.handleWordChange}/>
+              </Form.Group>
+              <Form.Group as={Col} md="3">
                 <Button type="submit" variant="dark">Search</Button>
-              </Col>
+              </Form.Group>
             </Form.Row>
           </Form>
         </Card.Body>
@@ -25,3 +53,10 @@ export default class WordsLettersForm extends Component {
     );
   }
 }
+
+WordsLettersForm.propTypes = {
+  onResult: PropTypes.func.isRequired,
+};
+
+export default WordsLettersForm;
+
