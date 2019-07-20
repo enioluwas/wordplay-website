@@ -11,16 +11,62 @@ class AdvancedSearchForm extends Component {
     this.state = {
       beginsWith: '',
       endsWith: '',
-      contains: '',
-      containsAtLetter: '',
-      containsAtIndex: '',
+      contains: Array(15).fill(''),
+      containsAtLetter: Array(15).fill(''),
+      containsAtIndex: Array(15).fill(''),
       size: '',
       disableSubmit: false,
     };
 
+    this.handleContainsChange = this.handleContainsChange.bind(this);
+    this.handleContainsAtLetterChange = this.handleContainsAtLetterChange.bind(this);
+    this.handleContainsAtIndexChange = this.handleContainsAtIndexChange.bind(this);
+    this.updateVariableField = this.updateVariableField.bind(this);
     this.handleAlphaInputChange = this.handleAlphaInputChange.bind(this);
     this.handleNumericInputChange = this.handleNumericInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleContainsChange(event) {
+    const { name, value, maxLength } = event.target;
+    if (value.length === 0 || isAlpha(value)) {
+      this.updateVariableField(name, value, maxLength, 's', 'contains');
+    }
+  }
+
+  updateVariableField(name, value, maxLength, endChar, fieldToUpdate) {
+    const index = name.endsWith(endChar) ? 0 : parseInt(name.slice(-1));
+    const field = [...this.state[fieldToUpdate]];
+    field[index] = value.substring(0, maxLength);
+    this.setState({ [fieldToUpdate]: field });
+  }
+
+  handleContainsAtLetterChange(event) {
+    const { name, value, maxLength } = event.target;
+    if (value.length === 0 || isAlpha(value)) {
+      this.updateVariableField(name, value, maxLength, 'r', 'containsAtLetter');
+    }
+  }
+
+  handleContainsAtIndexChange(event) {
+    const { name, value, maxLength } = event.target;
+    let mutableValue = ` ${value}`.slice(1);
+    if (mutableValue.length === 0) {
+      this.updateVariableField(name, mutableValue, maxLength, 'x', 'containsAtIndex');
+      return;
+    } else if (isNumeric(mutableValue)) {
+      if (mutableValue.charAt(0) === '0') {
+        mutableValue = '';
+      } else if (mutableValue.charAt(0) === '1') {
+        if (parseInt(mutableValue) > 15) {
+          mutableValue = mutableValue.substr(0, mutableValue.length - 1);
+        }
+      } else {
+        mutableValue = mutableValue.charAt(0);
+      }
+
+      this.updateVariableField(name, mutableValue, maxLength, 'x', 'containsAtIndex');
+    }
   }
 
   handleAlphaInputChange(event) {
@@ -112,8 +158,8 @@ class AdvancedSearchForm extends Component {
                   type="text"
                   placeholder="e.g ere"
                   maxLength="15"
-                  value={this.state.contains}
-                  onChange={this.handleAlphaInputChange}/>
+                  value={this.state.contains[0]}
+                  onChange={this.handleContainsChange}/>
                 <InputGroup.Append>
                   <Button variant="outline-success" className="addButton"><strong>+</strong></Button>
                 </InputGroup.Append>
@@ -134,8 +180,8 @@ class AdvancedSearchForm extends Component {
                     placeholder="A-Z"
                     maxLength="1"
                     className="lbShort"
-                    value={this.state.containsAtLetter}
-                    onChange={this.handleAlphaInputChange}/>
+                    value={this.state.containsAtLetter[0]}
+                    onChange={this.handleContainsAtLetterChange}/>
                   <InputGroup.Prepend>
                     <InputGroup.Text style={{ maxWidth: '7rem' }} className="border-left">
                       <small>At Index</small>
@@ -147,8 +193,8 @@ class AdvancedSearchForm extends Component {
                     placeholder="1-15"
                     maxLength="2"
                     className="lbShort"
-                    value={this.state.containsAtIndex}
-                    onChange={this.handleNumericInputChange}/>
+                    value={this.state.containsAtIndex[0]}
+                    onChange={this.handleContainsAtIndexChange}/>
                   <InputGroup.Append>
                     <Button variant="outline-success" className="addButton"><strong>+</strong></Button>
                   </InputGroup.Append>
