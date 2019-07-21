@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Card, Col, Form, InputGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { isAlpha, isNumeric } from '../../utils';
-// import axios from 'axios';
+import { isAlpha, isNumeric, API_KEY } from '../../utils';
+import axios from 'axios';
+import to from 'await-to-js';
 
 class AdvancedSearchForm extends Component {
   constructor(props) {
@@ -125,11 +126,59 @@ class AdvancedSearchForm extends Component {
     this.setState((prevState) => ({ containsAtCount: prevState.containsAtCount - 1 }));
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
     this.setState({ disableSubmit: true });
-    const beginsWith = this.state.beginsWith;
-    console.log(beginsWith);
+    let url = `https://www.wordplay-api.stream/get_words?api_key=${API_KEY}`;
+
+    if (this.state.beginsWith) {
+      url += `&begins_with=${this.state.beginsWith}`;
+    }
+    if (this.state.endsWith) {
+      url += `&ends_with=${this.state.endsWith}`;
+    }
+    const contains = this.state.contains.filter((item) => item.length > 0);
+    if (contains.length > 0) {
+      url += `&contains=${contains.join(',')}`;
+    }
+
+    const containsAt = [];
+    for (const [idx, item] of this.state.containsAtLetter.entries()) {
+      if (item.length === 0) {
+        continue;
+      }
+      const containsAtIndex = this.state.containsAtIndex[idx];
+      if (containsAtIndex.length === 0) {
+        // handle error
+        this.setState({ disableSubmit: false });
+        return;
+      }
+
+      containsAt.push(`${item}${this.state.containsAtIndex[idx]}`);
+    }
+    if (containsAt.length > 0) {
+      url += `&contains_at=${containsAt.join(',')}`;
+    }
+
+    if (this.state.size) {
+      url += `&size_is=${this.state.size}`;
+    }
+
+    const options = {
+      url,
+      timeout: 15000,
+    };
+
+    const [err, response] = await to(axios(options));
+    if (null !== err) {
+      console.log(err); // temporary
+      this.props.onError(err);
+      this.setState({ disableSubmit: false });
+      return;
+    }
+
+    console.log(response.data); // temporary
+    this.props.onResult(response.data);
     this.setState({ disableSubmit: false });
   }
 
@@ -318,6 +367,7 @@ class AdvancedSearchForm extends Component {
 
 AdvancedSearchForm.propTypes = {
   onResult: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
 };
 
 export default AdvancedSearchForm;
