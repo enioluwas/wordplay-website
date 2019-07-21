@@ -21,7 +21,7 @@ class NavBar extends Component {
 
   render() {
     return (
-      <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
+      <Navbar bg="dark" variant="dark" expand="lg" fixed="top" collapseOnSelect>
         <Navbar.Brand>
           <img src={logo}
             width="30"

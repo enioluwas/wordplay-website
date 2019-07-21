@@ -6,7 +6,11 @@ import ResultItem from './ResultItem';
 class ResultsView extends Component {
   render() {
     return (
-      <Jumbotron fluid style={{ width: '100%', padding: '.5em' }}>
+      <Jumbotron fluid
+        style={{
+          width: '96%',
+          padding: '.5em',
+        }}>
         <Container style={{ padding: '.5em' }}>
           <div className="d-flex flex-wrap">
             {this.props.words.map((value, idx) => (<ResultItem key={idx} word={value}/>))}

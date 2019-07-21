@@ -5,15 +5,10 @@ import { isAlpha, API_KEY } from '../../utils';
 import axios from 'axios';
 import to from 'await-to-js';
 
-class AnagramsForm extends Component {
+class SimpleForm extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      word: '',
-      disableSubmit: false,
-    };
-
+    this.state = { word: '', disableSubmit: false };
     this.handleWordChange = this.handleWordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -28,8 +23,8 @@ class AnagramsForm extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     this.setState({ disableSubmit: true });
-    const word = this.state.word;
-    const url = `https://www.wordplay-api.stream/get_anagrams?api_key=${API_KEY}&word=${word}`;
+    let url = 'https://www.wordplay-api.stream/';
+    url = `${url}${this.props.formRoute}?api_key=${API_KEY}&word=${this.state.word}`;
     const options = {
       url,
       timeout: 15000,
@@ -37,10 +32,13 @@ class AnagramsForm extends Component {
 
     const [err, response] = await to(axios(options));
     if (null !== err) {
-      console.error(err);
+      console.log(err); // temporary
+      this.props.onError(err);
+      this.setState({ disableSubmit: false });
       return;
     }
-    console.log(response.data);
+
+    console.log(response.data); // temporary
     this.props.onResult(response.data);
     this.setState({ disableSubmit: false });
   }
@@ -48,12 +46,13 @@ class AnagramsForm extends Component {
   render() {
     return (
       <Card className="formCard border-0">
-        <Card.Header>Anagrams</Card.Header>
+        <Card.Header>{this.props.formTitle}</Card.Header>
         <Card.Body>
-          <Card.Text>Enter a word to find its anagrams.</Card.Text>
+          {this.props.formDescription &&
+          (<Card.Text>{this.props.formDescription}</Card.Text>)}
           <Form border="dark" onSubmit={this.handleSubmit}>
             <Form.Row style={{ margin: 'auto' }}>
-              <Form.Group as={Col} xs="7" controlId="anagramsWord">
+              <Form.Group as={Col} xs="7" controlId="word">
                 <Form.Control
                   name="word"
                   maxLength="15"
@@ -75,8 +74,12 @@ class AnagramsForm extends Component {
 }
 
 
-AnagramsForm.propTypes = {
+SimpleForm.propTypes = {
+  formTitle: PropTypes.string.isRequired,
+  formDescription: PropTypes.string,
+  formRoute: PropTypes.string.isRequired,
   onResult: PropTypes.func.isRequired,
+  onError: PropTypes.func.isRequired,
 };
 
-export default AnagramsForm;
+export default SimpleForm;
