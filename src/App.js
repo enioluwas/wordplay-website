@@ -76,6 +76,7 @@ class App extends Component {
   }
 
   setResults(data) {
+    data.sort();
     this.setState({ error: null, results: data });
   }
 

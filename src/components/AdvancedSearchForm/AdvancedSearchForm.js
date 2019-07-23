@@ -200,7 +200,7 @@ class AdvancedSearchForm extends Component {
         <Card.Header className="text-center">
         Advanced Search
         </Card.Header>
-        <Card.Body>
+        <Card.Body style={{ padding: '.8rem' }}>
           <Card.Text>Fill in the criteria below to find words.</Card.Text>
           <Form border="dark">
             <Form.Row>

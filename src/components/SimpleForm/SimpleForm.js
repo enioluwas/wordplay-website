@@ -53,7 +53,7 @@ class SimpleForm extends Component {
     return (
       <Card className="formCard border-0">
         <Card.Header>{this.props.formTitle}</Card.Header>
-        <Card.Body>
+        <Card.Body style={{ padding: '.8rem' }}>
           {this.props.formDescription &&
           (<Card.Text>{this.props.formDescription}</Card.Text>)}
           <Form border="dark" onSubmit={this.mockResult}>
