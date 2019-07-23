@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 class ResultItem extends Component {
   render() {
     return (
-      <div className="resultItem">
+      <span id={`resultItem${this.props.itemKey}`} className="resultItem">
         {this.props.word}
-      </div>
+      </span>
     );
   }
 }
 
 ResultItem.propTypes = {
+  itemKey: PropTypes.number.isRequired,
   word: PropTypes.string.isRequired,
 };
 

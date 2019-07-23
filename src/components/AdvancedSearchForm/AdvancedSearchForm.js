@@ -126,8 +126,23 @@ class AdvancedSearchForm extends Component {
     this.setState((prevState) => ({ containsAtCount: prevState.containsAtCount - 1 }));
   }
 
+  validateInput() {
+    for (let idx = 0; idx < this.state.containsAtCount; idx++) {
+      const atLetter = this.state.containsAtLetter[idx];
+      const atIndex = this.state.containsAtIndex[idx];
+      if (!(atLetter && atIndex)) {
+        if (!atLetter) {
+
+        }
+      }
+    }
+  }
+
   async handleSubmit(event) {
     event.preventDefault();
+    if (!this.validateInput()) {
+      return;
+    }
     this.setState({ disableSubmit: true });
     let url = `https://www.wordplay-api.stream/get_words?api_key=${API_KEY}`;
 
@@ -147,13 +162,6 @@ class AdvancedSearchForm extends Component {
       if (item.length === 0) {
         continue;
       }
-      const containsAtIndex = this.state.containsAtIndex[idx];
-      if (containsAtIndex.length === 0) {
-        // handle error
-        this.setState({ disableSubmit: false });
-        return;
-      }
-
       containsAt.push(`${item}${this.state.containsAtIndex[idx]}`);
     }
     if (containsAt.length > 0) {

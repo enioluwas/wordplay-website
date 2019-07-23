@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
-import { Jumbotron, Container } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ResultItem from './ResultItem';
 
 class ResultsView extends Component {
   render() {
     return (
-      <Jumbotron fluid
-        style={{
-          width: '96%',
-          padding: '.5em',
-        }}>
-        <Container style={{ padding: '.5em' }}>
-          <div className="d-flex flex-wrap">
-            {this.props.words.map((value, idx) => (<ResultItem key={idx} word={value}/>))}
-          </div>
-        </Container>
-      </Jumbotron>
+      <Card className="resultsCard border-0">
+        <Card.Header>
+          <span>Results</span>
+          {/* <span className="float-right">Test</span> */}
+        </Card.Header>
+        <div className=" resultsContainer d-flex flex-wrap">
+          {this.props.words.map((value, idx) => (<ResultItem key={idx} itemKey={idx} word={value}/>))}
+        </div>
+      </Card>
     );
   }
 }

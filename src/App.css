@@ -41,6 +41,21 @@ hr {
   border: 1px solid #d8d8d8!important;
 }
 
+.resultsCard {
+  width: 96%;
+  max-width: 1000px;
+  border-radius: 0 !important;
+  border: 1px solid #d8d8d8!important;
+}
+
+.resultsContainer {
+  padding: .5rem;
+}
+
+/* .resultsContainer > span:not(:nth-last-of-type(1)){
+  border-right: 0 !important;
+} */
+
 .formCard ::placeholder {
   font-size: .9rem;
 }

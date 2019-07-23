@@ -11,6 +11,7 @@ class SimpleForm extends Component {
     this.state = { word: '', disableSubmit: false };
     this.handleWordChange = this.handleWordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.mockResult = this.mockResult.bind(this);
   }
 
   handleWordChange(event) {
@@ -18,6 +19,11 @@ class SimpleForm extends Component {
     if (value.length === 0 || isAlpha(value)) {
       this.setState({ [name]: value.substring(0, maxLength) });
     }
+  }
+
+  mockResult(event) {
+    event.preventDefault();
+    this.props.onResult(['and', 'anda', 'adnad', 'mock', 'mockery', 'investigation']);
   }
 
   async handleSubmit(event) {
@@ -50,7 +56,7 @@ class SimpleForm extends Component {
         <Card.Body>
           {this.props.formDescription &&
           (<Card.Text>{this.props.formDescription}</Card.Text>)}
-          <Form border="dark" onSubmit={this.handleSubmit}>
+          <Form border="dark" onSubmit={this.mockResult}>
             <Form.Row style={{ margin: 'auto' }}>
               <Form.Group as={Col} xs="7" controlId="word">
                 <Form.Control
