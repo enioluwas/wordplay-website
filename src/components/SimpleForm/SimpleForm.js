@@ -17,7 +17,7 @@ class SimpleForm extends Component {
   handleWordChange(event) {
     const { name, value, maxLength } = event.target;
     if (value.length === 0 || isAlpha(value)) {
-      this.setState({ [name]: value.substring(0, maxLength) });
+      this.setState({ [name]: value.substring(0, maxLength).toLowerCase() });
     }
   }
 

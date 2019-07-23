@@ -49,7 +49,7 @@ class AdvancedSearchForm extends Component {
   updateVariableField(name, value, maxLength, endChar, fieldToUpdate) {
     const index = name.endsWith(endChar) ? 0 : parseInt(name.slice(-1));
     const field = [...this.state[fieldToUpdate]];
-    field[index] = value.substring(0, maxLength);
+    field[index] = value.substring(0, maxLength).toLowerCase();
     this.setState({ [fieldToUpdate]: field });
   }
 
@@ -70,7 +70,7 @@ class AdvancedSearchForm extends Component {
   handleAlphaInputChange(event) {
     const { name, value, maxLength } = event.target;
     if (value.length === 0 || isAlpha(value)) {
-      this.setState({ [name]: value.substring(0, maxLength) });
+      this.setState({ [name]: value.substring(0, maxLength).toLowerCase() });
     }
   }
 
@@ -288,7 +288,7 @@ class AdvancedSearchForm extends Component {
                   <Form.Control
                     name="containsAtLetter"
                     type="text"
-                    placeholder="A-Z"
+                    placeholder="a-z"
                     maxLength="1"
                     className="lbShort"
                     value={this.state.containsAtLetter[0]}
