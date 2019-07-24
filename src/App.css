@@ -81,7 +81,7 @@ hr {
 }
 
 .resultItem {
-  border: 1px solid #292c45;
+  border: 1px solid #343a40;
   padding: .5rem !important;
 }
 
@@ -95,12 +95,24 @@ hr {
   justify-content: center;
 }
 
-.page-link:disabled, .page-link .disabled {
-  cursor: default;
-  list-style: none;
+.pagination li a {
+  color: #343a40;
 }
 
-.page-link:not(:disabled):not(.disabled) {
+.page-item.active .page-link {
+  background-color: #343a40;
+  border-color: #343a40;
+}
+
+.page-link:hover {
+  color: #343a40; 
+}
+
+.page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(52,58,64,.25);
+}
+
+.sortOrderImg {
   cursor: pointer;
 }
 
