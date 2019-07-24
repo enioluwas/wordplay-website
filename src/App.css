@@ -85,6 +85,25 @@ hr {
   padding: .5rem !important;
 }
 
+.paginatorContainer {
+  padding: .8rem;
+}
+
+.pagination {
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-link:disabled, .page-link .disabled {
+  cursor: default;
+  list-style: none;
+}
+
+.page-link:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

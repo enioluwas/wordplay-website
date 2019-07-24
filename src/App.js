@@ -85,7 +85,7 @@ class App extends Component {
       return (<p>No results</p>);
     }
     return (
-      <ResultsView words={data}/>
+      <ResultsView words={data} pageLimit={100}/>
     );
   }
 

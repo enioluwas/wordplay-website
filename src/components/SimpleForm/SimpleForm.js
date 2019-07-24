@@ -23,7 +23,11 @@ class SimpleForm extends Component {
 
   mockResult(event) {
     event.preventDefault();
-    this.props.onResult(['and', 'anda', 'adnad', 'mock', 'mockery', 'investigation']);
+    const mockArray = ['and', 'anda', 'adnad', 'mock', 'mockery', 'investigation'];
+    for (let i = 0; i < 500; i++) {
+      mockArray.push(mockArray[i % mockArray.length]);
+    }
+    this.props.onResult(mockArray);
   }
 
   async handleSubmit(event) {
