@@ -52,10 +52,6 @@ hr {
   padding: .5rem;
 }
 
-/* .resultsContainer > span:not(:nth-last-of-type(1)){
-  border-right: 0 !important;
-} */
-
 .formCard ::placeholder {
   font-size: .9rem;
 }

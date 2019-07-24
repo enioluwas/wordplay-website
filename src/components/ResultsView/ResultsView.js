@@ -10,6 +10,8 @@ class ResultsView extends Component {
     this.state = {
       sorted: 'alpha',
       words: props.words,
+      pageCount: 0,
+      offset: 0,
     };
 
     this.handleChangeSort = this.handleChangeSort.bind(this);
@@ -30,6 +32,11 @@ class ResultsView extends Component {
     }
 
     this.setState({ sorted: name, words });
+  }
+
+  handlePageClick(event) {
+    const { selected } = event;
+    const offset = Math.ceil(selected * this.props.pageLimit);
   }
 
   render() {
@@ -66,6 +73,7 @@ class ResultsView extends Component {
 
 ResultsView.propTypes = {
   words: PropTypes.array.isRequired,
+  pageLimit: PropTypes.number.isRequired,
 };
 
 export default ResultsView;
