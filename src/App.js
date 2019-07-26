@@ -84,8 +84,10 @@ class App extends Component {
     if (data.length === 0) {
       return (<p>No results</p>);
     }
+    // Ensure ResultView completely refreshes
+    const key = `${data[0]}${data.length}${data[data.length - 1]}`;
     return (
-      <ResultsView words={data} pageLimit={100}/>
+      <ResultsView key={key} words={data} pageLimit={100}/>
     );
   }
 

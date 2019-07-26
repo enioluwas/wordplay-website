@@ -121,7 +121,7 @@ class ResultsView extends Component {
 
   displayCurrentWords() {
     const currentWords = this.state.currentWords;
-    return currentWords.map((value, idx) => (<ResultItem key={idx} itemKey={idx} word={value}/>));
+    return currentWords.map((value, idx) => (<ResultItem key={`value${idx}`} itemKey={idx} word={value}/>));
   }
 
   render() {

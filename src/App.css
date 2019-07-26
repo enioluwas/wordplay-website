@@ -75,8 +75,8 @@ hr {
 }
 
 .lbShort {
-  padding-left: .2rem;
-  padding-right: .2rem;
+  padding-left: .2rem !important;
+  padding-right: .2rem !important;
   text-align: center;
 }
 
@@ -115,6 +115,10 @@ hr {
 .sortOrderImg {
   cursor: pointer;
 }
+/* 
+.invalid-feedback {
+  display: block;
+} */
 
 @keyframes App-logo-spin {
   from {
