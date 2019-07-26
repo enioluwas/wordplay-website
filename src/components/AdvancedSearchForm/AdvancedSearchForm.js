@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Button, Card, Col, Form, InputGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { isAlpha, isNumeric, API_KEY } from '../../utils';
+import { isAlpha, isNumeric, API_KEY, DEFAULT_TIMEOUT, WEB_URL } from '../../utils';
 import axios from 'axios';
 import to from 'await-to-js';
 
@@ -299,7 +299,7 @@ class AdvancedSearchForm extends Component {
     }
 
     this.setState({ disableSubmit: true });
-    let url = `https://www.wordplay-api.stream/get_words?api_key=${API_KEY}`;
+    let url = `${WEB_URL}/get_words?api_key=${API_KEY}`;
 
     if (this.state.beginsWith) {
       url += `&begins_with=${this.state.beginsWith}`;
@@ -329,7 +329,7 @@ class AdvancedSearchForm extends Component {
 
     const options = {
       url,
-      timeout: 15000,
+      timeout: DEFAULT_TIMEOUT,
     };
 
     const [err, response] = await to(axios(options));

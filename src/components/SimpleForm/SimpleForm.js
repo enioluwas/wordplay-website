@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Card, Col, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { isAlpha, API_KEY } from '../../utils';
+import { isAlpha, API_KEY, DEFAULT_TIMEOUT, WEB_URL } from '../../utils';
 import axios from 'axios';
 import to from 'await-to-js';
 
@@ -23,22 +23,21 @@ class SimpleForm extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     this.setState({ disableSubmit: true });
-    let url = 'https://www.wordplay-api.stream/';
-    url = `${url}${this.props.formRoute}?api_key=${API_KEY}&word=${this.state.word}`;
+    const url = `${WEB_URL}${this.props.formRoute}?api_key=${API_KEY}&word=${this.state.word}`;
     const options = {
       url,
-      timeout: 15000,
+      timeout: DEFAULT_TIMEOUT,
     };
 
     const [err, response] = await to(axios(options));
     if (null !== err) {
-      console.log(err); // temporary
+      // console.log(err);
       this.props.onError(err);
       this.setState({ disableSubmit: false });
       return;
     }
 
-    console.log(response.data); // temporary
+    // console.log(response.data); // temporary
     this.props.onResult(response.data);
     this.setState({ disableSubmit: false });
   }
