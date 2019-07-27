@@ -2,14 +2,24 @@ body {
   padding-top: 5rem;
 }
 
+:root {
+  --dark-color: #343a40;
+  --cream-color: #d8d8d8;
+  --dark-shadow: rgba(52,58,64,.25);
+}
+
 hr {
   border: 0;
   clear:both;
   display:block;
   width: 96%;               
-  background-color:#d8d8d8;
+  background-color: var(--cream-color);
   height: 1px;
 }
+
+/* .btn-dark {
+  background-color: var(--dark-color) !important;
+} */
 
 .App {
   text-align: center;
@@ -38,14 +48,14 @@ hr {
   width: 96%;
   max-width: 500px;
   border-radius: 0 !important;
-  border: 1px solid #d8d8d8!important;
+  border: 1px solid var(--cream-color) !important;
 }
 
 .resultsCard {
   width: 96%;
   max-width: 1000px;
   border-radius: 0 !important;
-  border: 1px solid #d8d8d8!important;
+  border: 1px solid var(--cream-color) !important;
 }
 
 .resultsContainer {
@@ -80,8 +90,12 @@ hr {
   text-align: center;
 }
 
+.form-control.is-invalid ~ .input-group-append .addButton {
+  border-left: none !important;
+}
+
 .resultItem {
-  border: 1px solid #343a40;
+  border: 1px solid var(--cream-color);
   padding: .5rem !important;
 }
 
@@ -95,30 +109,39 @@ hr {
   justify-content: center;
 }
 
+.page-item:not(.disabled) {
+  cursor: pointer;
+}
+
 .pagination li a {
-  color: #343a40;
+  color: var(--dark-color);
 }
 
 .page-item.active .page-link {
-  background-color: #343a40;
-  border-color: #343a40;
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
 }
 
 .page-link:hover {
-  color: #343a40; 
+  color: var(--dark-color); 
 }
 
 .page-link:focus {
-  box-shadow: 0 0 0 0.2rem rgba(52,58,64,.25);
+  box-shadow: 0 0 0 0.2rem var(--dark-shadow);
 }
 
 .sortOrderImg {
   cursor: pointer;
 }
-/* 
-.invalid-feedback {
-  display: block;
-} */
+
+.alert {
+  font-size: 0.95rem;
+}
+
+.form-control.is-invalid {
+  background-image: none;
+  padding-right: 0;
+}
 
 @keyframes App-logo-spin {
   from {
