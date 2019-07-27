@@ -23,7 +23,10 @@ class SimpleForm extends Component {
   handleWordChange(event) {
     const { name, value, maxLength } = event.target;
     if (value.length === 0 || isAlpha(value)) {
-      this.setState({ [name]: value.substring(0, maxLength).toLowerCase() });
+      this.setState({
+        [name]: value.substring(0, maxLength).toLowerCase(),
+        isInvalid: false,
+      });
     }
   }
 
@@ -33,7 +36,7 @@ class SimpleForm extends Component {
     } else {
       return (
         <Alert variant="danger" onClose={() => {
-          this.setState({ feedback: null });
+          this.setState({ isInvalid: false, feedback: null });
         }} dismissible>
           {this.state.feedback}
         </Alert>
