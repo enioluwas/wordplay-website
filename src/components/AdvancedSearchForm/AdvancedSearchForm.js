@@ -227,13 +227,11 @@ class AdvancedSearchForm extends Component {
       const atIndex = this.state.containsAtIndex[idx];
       if (atLetter !== atIndex) {
         if (!atLetter) {
-          invalidFields[`containsAtLetter${idx === 0 ? '' : idx}`] = true;
           isValid = false;
           feedback = 'Fill in both "Letter" and "At Index" fields';
+          invalidFields[`containsAtLetter${idx === 0 ? '' : idx}`] = true;
         } else if (!atIndex) {
           invalidFields[`containsAtIndex${idx === 0 ? '' : idx}`] = true;
-          isValid = false;
-          feedback = 'Fill in both "Letter" and "atIndex" fields.';
         }
       } else if (atLetter === '' && atIndex === '') {
         containsAtEmptyCount++;
@@ -265,7 +263,7 @@ class AdvancedSearchForm extends Component {
           invalidFields[`containsAtLetter${idx === 0 ? '' : idx}`] = true;
           invalidFields[`containsAtIndex${idx === 0 ? '' : idx}`] = true;
         }
-        feedback = 'Fill in at least one of the fields.';
+        feedback = 'Fill in at least one of these fields.';
       }
     }
 
