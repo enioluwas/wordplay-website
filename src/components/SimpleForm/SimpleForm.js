@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, Col, Form } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { isAlpha, API_KEY, DEFAULT_TIMEOUT, WEB_URL } from '../../utils';
 import axios from 'axios';
@@ -8,8 +8,15 @@ import to from 'await-to-js';
 class SimpleForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { word: '', disableSubmit: false };
+    this.state = {
+      word: '',
+      disableSubmit: false,
+      feedback: null,
+      isInvalid: false,
+    };
     this.handleWordChange = this.handleWordChange.bind(this);
+    this.validateInput = this.validateInput.bind(this);
+    this.displayFeedback = this.displayFeedback.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -20,8 +27,37 @@ class SimpleForm extends Component {
     }
   }
 
+  displayFeedback() {
+    if (!this.state.feedback) {
+      return null;
+    } else {
+      return (
+        <Alert variant="danger" onClose={() => {
+          this.setState({ feedback: null });
+        }} dismissible>
+          {this.state.feedback}
+        </Alert>
+      );
+    }
+  }
+
+  validateInput() {
+    const { word } = this.state;
+    if (!word) {
+      const feedback = 'Please fill out this field.';
+      this.setState({ isInvalid: true, feedback });
+      return false;
+    }
+
+    return true;
+  }
+
   async handleSubmit(event) {
     event.preventDefault();
+    if (!this.validateInput()) {
+      return;
+    }
+
     this.setState({ disableSubmit: true });
     const url = `${WEB_URL}${this.props.formRoute}?api_key=${API_KEY}&word=${this.state.word}`;
     const options = {
@@ -50,16 +86,17 @@ class SimpleForm extends Component {
           {this.props.formDescription &&
           (<Card.Text>{this.props.formDescription}</Card.Text>)}
           <Form border="dark" onSubmit={this.handleSubmit}>
+            {this.state.feedback && this.displayFeedback()}
             <Form.Row style={{ margin: 'auto' }}>
               <Form.Group as={Col} xs="7" controlId="word">
                 <Form.Control
                   name="word"
+                  className={this.state.isInvalid && 'is-invalid'}
                   maxLength="15"
                   type="text"
                   placeholder="Word"
                   value={this.state.word}
-                  onChange={this.handleWordChange}
-                  required/>
+                  onChange={this.handleWordChange}/>
               </Form.Group>
               <Form.Group as={Col} xs="3">
                 <Button type="submit" variant="dark" disabled={this.state.disableSubmit}>Search</Button>

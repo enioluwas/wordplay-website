@@ -14,6 +14,7 @@ class ResultsView extends Component {
     super(props);
 
     const { words, pageLimit } = this.props;
+    const sameSizeWords = words.every((val) => val.length === words[0].length);
 
     this.state = {
       sorted: 'alpha',
@@ -21,6 +22,7 @@ class ResultsView extends Component {
       alphaSortOrder: 'aToZ',
       currentSortOrder: 'aToZ',
       words,
+      sameSizeWords,
       wordCount: words.length,
       currentWords: [],
       currentPage: 1,
@@ -57,7 +59,7 @@ class ResultsView extends Component {
     } else if (name === 'size') {
       words.sort((a, b) => a.length - b.length || a.localeCompare(b));
       sortOrder = this.state.sizeSortOrder;
-      if (sortOrder === 'descending') {
+      if (sortOrder === 'descending' && !this.state.sameSizeWords) {
         words.reverse();
       }
     }
@@ -78,7 +80,10 @@ class ResultsView extends Component {
     const fieldToChange = isAlpha ? 'alphaSortOrder' : 'sizeSortOrder';
     const newSortOrder = name === orders[0] ? orders[1] : orders[0];
     const words = [].concat(this.state.words);
-    words.reverse();
+
+    if (fieldToChange !== 'sizeSortOrder' || !this.state.sameSizeWords) {
+      words.reverse();
+    }
 
     this.setState({
       words,

@@ -225,10 +225,10 @@ class AdvancedSearchForm extends Component {
     for (let idx = 0; idx < this.state.containsAtCount; idx++) {
       const atLetter = this.state.containsAtLetter[idx];
       const atIndex = this.state.containsAtIndex[idx];
-      if (atLetter !== atIndex) {
+      if (atLetter.length !== atIndex.length) {
+        isValid = false;
+        feedback = 'Fill in both "Letter" and "At Index" fields.';
         if (!atLetter) {
-          isValid = false;
-          feedback = 'Fill in both "Letter" and "At Index" fields';
           invalidFields[`containsAtLetter${idx === 0 ? '' : idx}`] = true;
         } else if (!atIndex) {
           invalidFields[`containsAtIndex${idx === 0 ? '' : idx}`] = true;
@@ -296,8 +296,8 @@ class AdvancedSearchForm extends Component {
       return;
     }
 
-    this.setState({ disableSubmit: true });
-    let url = `${WEB_URL}/get_words?api_key=${API_KEY}`;
+    this.setState({ disableSubmit: true, feedback: null });
+    let url = `${WEB_URL}get_words?api_key=${API_KEY}`;
 
     if (this.state.beginsWith) {
       url += `&begins_with=${this.state.beginsWith}`;
@@ -332,13 +332,19 @@ class AdvancedSearchForm extends Component {
 
     const [err, response] = await to(axios(options));
     if (null !== err) {
-      console.log(err); // temporary
-      this.props.onError(err);
-      this.setState({ disableSubmit: false });
+      let feedback = 'There was a problem processing your request.';
+      if (err.message === 'Network Error') {
+        feedback = 'There was a network error. Check your connection.';
+      } else if (err.code === 'ECONNABORTED') {
+        feedback = 'The request to the server timed out.';
+      } else if (err.response && err.response.status === 400) {
+        feedback = 'The server could not process your request.';
+      }
+      this.setState({ disableSubmit: false, feedback });
       return;
     }
 
-    console.log(response.data); // temporary
+    // console.log(response.data); // temporary
     this.props.onResult(response.data);
     this.setState({ disableSubmit: false });
   }

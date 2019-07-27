@@ -6,6 +6,7 @@ class ResultItem extends Component {
     return (
       <span id={`resultItem${this.props.itemKey}`} className="resultItem">
         {this.props.word}
+        <sup>{this.props.word.length}</sup>
       </span>
     );
   }
