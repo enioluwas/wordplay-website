@@ -19,10 +19,26 @@ class SimpleForm extends Component {
 
     this.request = null;
 
+    this.getInitialState = this.getInitialState.bind(this);
     this.handleWordChange = this.handleWordChange.bind(this);
     this.validateInput = this.validateInput.bind(this);
     this.displayFeedback = this.displayFeedback.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  getInitialState() {
+    return {
+      word: '',
+      disableSubmit: false,
+      feedback: null,
+      isInvalid: false,
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.formTitle !== prevProps.formTitle) {
+      this.setState(this.getInitialState());
+    }
   }
 
   async componentDidMount() {
