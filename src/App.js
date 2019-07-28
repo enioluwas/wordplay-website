@@ -4,6 +4,10 @@ import NavBar from './components/NavBar/NavBar';
 import SimpleForm from './components/SimpleForm/SimpleForm';
 import AdvancedSearchForm from './components/AdvancedSearchForm/AdvancedSearchForm';
 import ResultsView from './components/ResultsView/ResultsView';
+import { DEFAULT_TIMEOUT } from './utils';
+import * as localforage from 'localforage';
+import memoryDriver from 'localforage-memoryStorageDriver';
+import { setup } from 'axios-cache-adapter';
 
 class App extends Component {
   constructor(props) {
@@ -13,6 +17,7 @@ class App extends Component {
       currentPage: 'Advanced Search',
       results: null,
       error: null,
+      request: null,
     };
 
     this.setCurrentPage = this.setCurrentPage.bind(this);
@@ -49,6 +54,36 @@ class App extends Component {
     };
   }
 
+  async componentDidMount() {
+    await localforage.defineDriver(memoryDriver);
+    const storage = localforage.createInstance({
+      driver: [
+        localforage.INDEXEDDB,
+        localforage.LOCALSTORAGE,
+        memoryDriver._driver,
+      ],
+      name: 'wordplay-cache',
+    });
+
+    const request = setup({
+      timeout: DEFAULT_TIMEOUT,
+      cache: {
+        exclude: { query: false },
+        maxAge: 15 * 60 * 1000,
+        readOnError: (err, req) => {
+          return (
+            err.message === 'Network Error' ||
+            err.code === 'ECONNABORTED' ||
+            err.response.status === 500);
+        },
+        clearOnStale: true, // for now, until the word list we use is finalized
+        store: storage,
+      },
+    });
+
+    this.setState({ request });
+  }
+
   setCurrentPage(page) {
     this.setState({
       results: null,
@@ -59,10 +94,10 @@ class App extends Component {
 
   getComponentfromPage(page) {
     switch (page) {
-    case 'Advanced Search': return (<AdvancedSearchForm {...this.baseProps}/>);
-    case 'Anagrams': return (<SimpleForm {...this.anagramsProps}/>);
-    case 'Words Within Word': return (<SimpleForm {...this.wordsWithinWordProps}/>);
-    case 'Words With Letters': return (<SimpleForm {...this.wordsWithLettersProps}/>);
+    case 'Advanced Search': return (<AdvancedSearchForm {...this.baseProps} request={this.state.request} />);
+    case 'Anagrams': return (<SimpleForm {...this.anagramsProps} request={this.state.request}/>);
+    case 'Words Within Word': return (<SimpleForm {...this.wordsWithinWordProps} request={this.state.request}/>);
+    case 'Words With Letters': return (<SimpleForm {...this.wordsWithLettersProps} request={this.state.request}/>);
     default: return null;
     }
   }

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Button, Card, Col, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { isAlpha, API_KEY, DEFAULT_TIMEOUT, WEB_URL } from '../../utils';
-import * as localforage from 'localforage';
-import memoryDriver from 'localforage-memoryStorageDriver';
-import { setup } from 'axios-cache-adapter';
+import { isAlpha, API_KEY, WEB_URL } from '../../utils';
 import to from 'await-to-js';
 
 class SimpleForm extends Component {
@@ -16,8 +13,6 @@ class SimpleForm extends Component {
       feedback: null,
       isInvalid: false,
     };
-
-    this.request = null;
 
     this.getInitialState = this.getInitialState.bind(this);
     this.handleWordChange = this.handleWordChange.bind(this);
@@ -40,35 +35,6 @@ class SimpleForm extends Component {
       this.setState(this.getInitialState());
     }
   }
-
-  async componentDidMount() {
-    await localforage.defineDriver(memoryDriver);
-    const storage = localforage.createInstance({
-      driver: [
-        localforage.INDEXEDDB,
-        localforage.LOCALSTORAGE,
-        memoryDriver._driver,
-      ],
-      name: 'wordplay-cache',
-    });
-
-    this.request = setup({
-      timeout: DEFAULT_TIMEOUT,
-      cache: {
-        exclude: { query: false },
-        maxAge: 15 * 60 * 1000,
-        readOnError: (err, req) => {
-          return (
-            err.message === 'Network Error' ||
-            err.code === 'ECONNABORTED' ||
-            err.response.status === 500);
-        },
-        clearOnStale: true, // for now, until the word list we use is finalized
-        store: storage,
-      },
-    });
-  }
-
 
   handleWordChange(event) {
     const { name, value, maxLength } = event.target;
@@ -113,11 +79,17 @@ class SimpleForm extends Component {
 
     this.setState({ disableSubmit: true });
     const url = `${WEB_URL}${this.props.formRoute}?api_key=${API_KEY}&word=${this.state.word}`;
-    const [err, response] = await to(this.request.get(url));
+    const [err, response] = await to(this.props.request.get(url));
     if (null !== err) {
-      // console.log(err);
-      this.props.onError(err);
-      this.setState({ disableSubmit: false });
+      let feedback = 'There was a problem processing your request.';
+      if (err.message === 'Network Error') {
+        feedback = 'There was a network error. Check your connection.';
+      } else if (err.code === 'ECONNABORTED') {
+        feedback = 'The request to the server timed out.';
+      } else if (err.response && err.response.status === 400) {
+        feedback = 'The server could not process your request.';
+      }
+      this.setState({ disableSubmit: false, feedback });
       return;
     }
 
@@ -164,6 +136,7 @@ SimpleForm.propTypes = {
   formRoute: PropTypes.string.isRequired,
   onResult: PropTypes.func.isRequired,
   onError: PropTypes.func.isRequired,
+  request: PropTypes.any,
 };
 
 export default SimpleForm;
