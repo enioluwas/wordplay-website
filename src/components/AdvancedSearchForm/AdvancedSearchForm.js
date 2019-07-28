@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Alert, Button, Card, Col, Form, InputGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { isAlpha, isNumeric, API_KEY, DEFAULT_TIMEOUT, WEB_URL } from '../../utils';
-import axios from 'axios';
+import * as localforage from 'localforage';
+import memoryDriver from 'localforage-memoryStorageDriver';
+import { setup } from 'axios-cache-adapter';
 import to from 'await-to-js';
 
 class AdvancedSearchForm extends Component {
@@ -23,6 +25,8 @@ class AdvancedSearchForm extends Component {
       feedback: null,
     };
 
+    this.request = null;
+
     this.updateVariableField = this.updateVariableField.bind(this);
     this.addExtraContainsFields = this.addExtraContainsFields.bind(this);
     this.handleAddContainsField = this.handleAddContainsField.bind(this);
@@ -39,6 +43,34 @@ class AdvancedSearchForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateInput = this.validateInput.bind(this);
     this.displayFeedback = this.displayFeedback.bind(this);
+  }
+
+  async componentDidMount() {
+    await localforage.defineDriver(memoryDriver);
+    const storage = localforage.createInstance({
+      driver: [
+        localforage.INDEXEDDB,
+        localforage.LOCALSTORAGE,
+        memoryDriver._driver,
+      ],
+      name: 'wordplay-cache',
+    });
+
+    this.request = setup({
+      timeout: DEFAULT_TIMEOUT,
+      cache: {
+        exclude: { query: false },
+        maxAge: 15 * 60 * 1000,
+        readOnError: (err, req) => {
+          return (
+            err.message === 'Network Error' ||
+            err.code === 'ECONNABORTED' ||
+            err.response.status === 500);
+        },
+        clearOnStale: true, // for now, until the word list we use is finalized
+        store: storage,
+      },
+    });
   }
 
   addExtraContainsFields() {
@@ -325,12 +357,7 @@ class AdvancedSearchForm extends Component {
       url += `&size_is=${this.state.size}`;
     }
 
-    const options = {
-      url,
-      timeout: DEFAULT_TIMEOUT,
-    };
-
-    const [err, response] = await to(axios(options));
+    const [err, response] = await to(this.request.get(url));
     if (null !== err) {
       let feedback = 'There was a problem processing your request.';
       if (err.message === 'Network Error') {
