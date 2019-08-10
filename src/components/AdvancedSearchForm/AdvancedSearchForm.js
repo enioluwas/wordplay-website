@@ -296,7 +296,7 @@ class AdvancedSearchForm extends Component {
     }
 
     this.setState({ disableSubmit: true, feedback: null });
-    let url = `${WEB_URL}get_words?api_key=${API_KEY}`;
+    let url = `${WEB_URL}get_words?api_key=${API_KEY}&word_list=Scrabble`;
 
     if (this.state.beginsWith) {
       url += `&begins_with=${this.state.beginsWith}`;
