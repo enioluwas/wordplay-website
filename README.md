@@ -7,3 +7,5 @@ I built this website to serve as an example of one of its many applications - lo
 Built with [React](https://reactjs.org/) and [Bootstrap](https://getbootstrap.com/), serving data from a [Flask](https://palletsprojects.com/p/flask/) API server.
 
 [Test it out!](https://github.com/enioluwa23/wordplay-website)
+
+![Website Demo Picture](https://raw.githubusercontent.com/enioluwa23/wordplay-website/master/demo.PNG?token=AD7XC5DKDUX3QA4DFO2PSNK5K5PDS)
