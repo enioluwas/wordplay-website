@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "625ae9f2809d388779660c1481062bc8",
+    "revision": "638301afc4fbde48a1190e87ba6d0c03",
     "url": "/wordplay-website/index.html"
   },
   {
-    "revision": "3b70d41e7623863fd46c",
+    "revision": "2340107a9cfe84187077",
     "url": "/wordplay-website/static/css/main.c2467aa4.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/wordplay-website/static/js/2.9a97b0e4.chunk.js"
   },
   {
-    "revision": "3b70d41e7623863fd46c",
-    "url": "/wordplay-website/static/js/main.769f4256.chunk.js"
+    "revision": "2340107a9cfe84187077",
+    "url": "/wordplay-website/static/js/main.eb987043.chunk.js"
   },
   {
     "revision": "1a90569a76a09a0ee2dc",

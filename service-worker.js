@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/wordplay-website/precache-manifest.c3e7a1e3175c661879bb3a518475bc9e.js"
+  "/wordplay-website/precache-manifest.73e3fd7a8943b613454d569b82bb7ac6.js"
 );
 
 self.addEventListener('message', (event) => {
