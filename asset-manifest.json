@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.css": "/wordplay-website/static/css/main.c2467aa4.chunk.css",
+    "main.js": "/wordplay-website/static/js/main.769f4256.chunk.js",
+    "runtime~main.js": "/wordplay-website/static/js/runtime~main.fa82aadd.js",
+    "static/js/2.9a97b0e4.chunk.js": "/wordplay-website/static/js/2.9a97b0e4.chunk.js",
+    "index.html": "/wordplay-website/index.html",
+    "precache-manifest.c3e7a1e3175c661879bb3a518475bc9e.js": "/wordplay-website/precache-manifest.c3e7a1e3175c661879bb3a518475bc9e.js",
+    "service-worker.js": "/wordplay-website/service-worker.js",
+    "static/media/app-logo.svg": "/wordplay-website/static/media/app-logo.65dca350.svg"
+  }
+}
